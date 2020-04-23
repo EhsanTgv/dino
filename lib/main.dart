@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flame_splash_screen/flame_splash_screen.dart';
 
+import 'game/game.dart';
+
 void main() {
   runApp(MaterialApp(
     title: 'TRexGame',
@@ -24,8 +26,7 @@ class TRexGameWrapper extends StatefulWidget {
 
 class _TRexGameWrapperState extends State<TRexGameWrapper> {
   bool splashGone = false;
-
-//  TRexGame game;
+  TRexGame game;
 
   @override
   void initState() {
@@ -36,7 +37,7 @@ class _TRexGameWrapperState extends State<TRexGameWrapper> {
   void startGame() {
     Flame.images.loadAll(["sprite.png"]).then((image) => {
           setState(() {
-//        game = TRexGame(spriteImage: image[0]);
+            game = TRexGame(spriteImage: image[0]);
           })
         });
   }
@@ -56,17 +57,17 @@ class _TRexGameWrapperState extends State<TRexGameWrapper> {
   }
 
   Widget _buildGame(BuildContext context) {
-//    if (game == null) {
+    if (game == null) {
       return const Center(
         child: Text("Loading"),
       );
-//    }
+    }
     return Container(
       color: Colors.white,
       constraints: const BoxConstraints.expand(),
       child: Container(
-//        child: game.widget,
-          ),
+        child: game.widget,
+      ),
     );
   }
 }
