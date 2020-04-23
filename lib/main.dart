@@ -1,30 +1,72 @@
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flame_splash_screen/flame_splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    title: 'TRexGame',
+    color: Colors.white,
+    debugShowCheckedModeBanner: false,
+    home: Scaffold(
+      body: TRexGameWrapper(),
+    ),
+  ));
+
+  Flame.util.fullScreen();
 }
 
-class MyApp extends StatelessWidget {
+class TRexGameWrapper extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dino',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
+  _TRexGameWrapperState createState() => _TRexGameWrapperState();
+}
+
+class _TRexGameWrapperState extends State<TRexGameWrapper> {
+  bool splashGone = false;
+
+//  TRexGame game;
+
+  @override
+  void initState() {
+    super.initState();
+    startGame();
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  void startGame() {
+    Flame.images.loadAll(["sprite.png"]).then((image) => {
+          setState(() {
+//        game = TRexGame(spriteImage: image[0]);
+          })
+        });
+  }
 
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return splashGone
+        ? _buildGame(context)
+        : FlameSplashScreen(
+            theme: FlameSplashTheme.white,
+            onFinish: (context) {
+              setState(() {
+                splashGone = true;
+              });
+            },
+          );
+  }
+
+  Widget _buildGame(BuildContext context) {
+//    if (game == null) {
+      return const Center(
+        child: Text("Loading"),
+      );
+//    }
+    return Container(
+      color: Colors.white,
+      constraints: const BoxConstraints.expand(),
+      child: Container(
+//        child: game.widget,
+          ),
+    );
   }
 }
