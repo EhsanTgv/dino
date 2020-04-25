@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 
-//import 'package:trex/game/game_config.dart';
-import 'horizon/horizon.dart';
 import 't_rex/t_rex.dart';
+import 'horizon/horizon.dart';
+//import 'package:trex/game/game_config.dart';
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
