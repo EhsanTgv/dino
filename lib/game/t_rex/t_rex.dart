@@ -4,14 +4,13 @@ import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
 
-//import 'package:flame/components/resizable.dart';
+import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/sprite.dart';
 //import 'package:trex/game/t_rex/config.dart';
 
 enum TRexStatus { crashed, ducking, jumping, running, waiting }
 
-class TRex extends PositionComponent //    with Resizable
-{
+class TRex extends PositionComponent with Resizable {
   bool isIdle = true;
 
   TRexStatus status = TRexStatus.waiting;
@@ -44,7 +43,7 @@ class TRex extends PositionComponent //    with Resizable
   }
 
   void update(double t) {
-//    if(size == null) return;
+    if (size == null) return;
 //    y = (size.height / 2) - TRexConfig.height / 2;
     this.chosenDino.update(t, y);
   }
@@ -59,15 +58,15 @@ class RunningTRex extends AnimationComponent //    with TRexRepresentation
             Animation.spriteList([
               Sprite.fromImage(
                 spriteImage,
-//      width: TRexConfig.width,
-//      height: TRexConfig.height,
+//                width: TRexConfig.width,
+//                height: TRexConfig.height,
                 y: 4.0,
                 x: 1514.0,
               ),
               Sprite.fromImage(
                 spriteImage,
-//      width: TRexConfig.width,
-//      height: TRexConfig.height,
+//                width: TRexConfig.width,
+//                height: TRexConfig.height,
                 y: 4.0,
                 x: 1602.0,
               ),
@@ -81,8 +80,8 @@ class WaitingTRex extends SpriteComponent //    with TRexRepresentation
             88.0,
             90.0,
             Sprite.fromImage(spriteImage,
-//      width: TRexConfig.width,
-//      height: TRexConfig.height,
+//                width: TRexConfig.width,
+//                height: TRexConfig.height,
                 x: 76.0,
                 y: 6.0));
 }
