@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 
 import 't_rex/t_rex.dart';
 import 'horizon/horizon.dart';
-//import 'package:trex/game/game_config.dart';
+import 'game_config.dart';
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
@@ -29,7 +29,7 @@ class TRexGame extends BaseGame {
   }
 
   void onTap() {
-//    tRex.startJump(GameConfig.speed);
+    tRex.startJump(GameConfig.speed);
   }
 
   bool get playing => status == TRexGameStatus.playing;
