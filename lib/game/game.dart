@@ -10,7 +10,6 @@ enum TRexGameStatus { playing, waiting, gameOver }
 
 class TRexGame extends BaseGame {
   TRex tRex;
-
   Horizon horizon;
   TRexGameStatus status = TRexGameStatus.waiting;
 
@@ -22,14 +21,34 @@ class TRexGame extends BaseGame {
       ..add(tRex)..add(horizon);
   }
 
+  void onTap() {
+    tRex.startJump(GameConfig.speed);
+  }
+
   @override
   void update(double t) {
     tRex.update(t);
-    horizon.update(t);
+    horizon.updateWithSpeed(0.0, this.currentSpeed);
+
+    if (tRex.playingIntro && tRex.x >= TRexConfig.startXPos) {
+      startGame();
+    } else if (tRex.playingIntro) {
+      horizon.updateWithSpeed(0.0, this.currentSpeed);
+    }
+
+    if (this.playing) {
+      horizon.updateWithSpeed(t, this.currentSpeed);
+    }
+
+    if (this.currentSpeed < GameConfig.maxSpeed) {
+      this.currentSpeed += GameConfig.acceleration;
+    }
   }
 
-  void onTap() {
-    tRex.startJump(GameConfig.speed);
+  void startGame() {
+    tRex.status = TRexStatus.running;
+    status = TRexGameStatus.playing;
+    tRex.hasPlayedIntro = true;
   }
 
   bool get playing => status == TRexGameStatus.playing;
