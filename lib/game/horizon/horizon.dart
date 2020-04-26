@@ -6,6 +6,8 @@ import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/painting.dart';
+import 'package:ordered_set/comparing.dart';
+import 'package:ordered_set/ordered_set.dart';
 
 class HorizonDimensions {
   static double width = 1200.0;
@@ -39,8 +41,6 @@ class Horizon extends PositionComponent with Resizable, ComposedComponent {
     horizonLine.updateWithSpeed(t, speed);
     super.update(t);
   }
-
-
 }
 
 class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
@@ -52,14 +52,16 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   final double bumpThreshold = 0.5;
 
   HorizonLine(Image spriteImage) {
-    softSprite = Sprite.fromImage(spriteImage,
+    softSprite = Sprite.fromImage(
+      spriteImage,
       width: HorizonDimensions.width,
       height: HorizonDimensions.height,
       y: 104.0,
       x: 2.0,
     );
 
-    Sprite bumpySprite = Sprite.fromImage(spriteImage,
+    Sprite bumpySprite = Sprite.fromImage(
+      spriteImage,
       width: HorizonDimensions.width,
       height: HorizonDimensions.height,
       y: 104.0,
@@ -103,27 +105,24 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   }
 }
 
-
 class HorizonGround extends SpriteComponent with Resizable {
-  HorizonGround(Image spriteImage, Sprite sprite) :
-        super.fromSprite(
-          HorizonDimensions.width, HorizonDimensions.height, sprite);
+  HorizonGround(Image spriteImage, Sprite sprite)
+      : super.fromSprite(
+      HorizonDimensions.width, HorizonDimensions.height, sprite);
 
   @override
   render(Canvas canvas) {
     if (x < HorizonDimensions.width) {
-      TextPainter p = Flame.util
-          .text(
-          "Tampa", color: new Color.fromRGBO(0, 0, 0, 1.0), fontSize: 48.0);
+      TextPainter p = Flame.util.text("Tampa",
+          color: new Color.fromRGBO(0, 0, 0, 1.0), fontSize: 48.0);
     }
     super.render(canvas);
   }
 }
 
-
 abstract class ComposedComponent extends Component with Resizable {
-  OrderedSet<Component> components = new OrderedSet(
-      Comparing.on((c) => c.priority()));
+  OrderedSet<Component> components =
+  new OrderedSet(Comparing.on((c) => c.priority()));
 
   @override
   render(Canvas canvas) {
@@ -156,5 +155,4 @@ abstract class ComposedComponent extends Component with Resizable {
   void updateComponents(IterateOverComponents iterateOverComponents) {
     components.forEach(iterateOverComponents);
   }
-
 }
