@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 't_rex/t_rex.dart';
 import 'horizon/horizon.dart';
 import 'game_config.dart';
+import 't_rex/config.dart';
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
@@ -12,6 +13,7 @@ class TRexGame extends BaseGame {
   TRex tRex;
   Horizon horizon;
   TRexGameStatus status = TRexGameStatus.waiting;
+  double currentSpeed = GameConfig.speed;
 
   TRexGame({Image spriteImage}) {
     tRex = new TRex(spriteImage);
