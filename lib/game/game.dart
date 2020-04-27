@@ -20,7 +20,7 @@ class TRexGame extends BaseGame {
     horizon = new Horizon(spriteImage);
 
     this
-      ..add(tRex)..add(horizon);
+      ..add(horizon)..add(tRex);
   }
 
   void onTap() {
