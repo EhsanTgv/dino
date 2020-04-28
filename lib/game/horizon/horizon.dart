@@ -1,11 +1,7 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/flame.dart';
-import 'package:flutter/painting.dart';
 import 'package:ordered_set/comparing.dart';
 import 'package:ordered_set/ordered_set.dart';
 
