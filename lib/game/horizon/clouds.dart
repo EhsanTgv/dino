@@ -7,23 +7,19 @@ import '../custom/composed_component.dart';
 import '../custom/util.dart';
 import 'config.dart';
 
-class CloudManager extends PositionComponent with ComposedComponent {
+class CloudManager extends PositionComponent with Resizable, ComposedComponent {
   Image spriteImage;
 
   CloudManager(this.spriteImage) : super();
 
-  @override
-  void updateWithSpeed(t, double speed) {
+  void updateWithSpeed(double t, double speed) {
     final double cloudSpeed = HorizonConfig.bgCloudSpeed / 1000 * t * speed;
     final int numClouds = this.components.length;
-
-    print(
-        components.length > 0 ? (components.elementAt(0) as Cloud).y : "none");
 
     if (numClouds > 0) {
       this.updateComponents((c) {
         Cloud cloud = c as Cloud;
-        cloud.updateWithSpeed(cloudSpeed);
+        cloud.updateWithSpeed(t, cloudSpeed);
       });
       Cloud lastCloud = components.last;
       if (numClouds < HorizonConfig.maxClouds &&
@@ -63,11 +59,12 @@ class Cloud extends SpriteComponent with Resizable {
               x: 166.0,
             ));
 
+  @override
   void update(double t) {}
 
-  void updateWithSpeed(double speed) {
+  void updateWithSpeed(double t, double speed) {
     if (toRemove) return;
-    x -= speed.ceil();
+    x -= (speed.ceil() * 50 * t);
 
     if (!isVisible) {
       this.toRemove = true;
