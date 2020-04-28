@@ -19,6 +19,7 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   HorizonGround secondGround;
 
   CloudManager cloudManager;
+  ObstacleManager obstacleManager;
 
   final double bumpThreshold = 0.5;
 
@@ -38,10 +39,14 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
       y: 104.0,
       x: 2.0 + HorizonDimensions.width,
     );
+
     this.cloudManager = CloudManager(spriteImage);
+    this.obstacleManager = ObstacleManager(spriteImage);
     this.firstGround = HorizonGround(softSprite);
     this.secondGround = HorizonGround(bumpySprite);
-    this..add(firstGround)..add(secondGround)..add(cloudManager);
+    this
+      ..add(firstGround)..add(secondGround)..add(cloudManager)..add(
+        obstacleManager);
   }
 
   bool getRandomType() {
@@ -65,6 +70,9 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
     double increment = (speed * 50 * t);
     updateXPos(firstGround.x <= 0, increment);
     cloudManager.updateWithSpeed(t, speed);
+
+    obstacleManager.updateWithSpeed(t, speed);
+
     super.update(t);
   }
 
@@ -80,13 +88,4 @@ class HorizonGround extends SpriteComponent with Resizable {
   HorizonGround(Sprite sprite)
       : super.fromSprite(
             HorizonDimensions.width, HorizonDimensions.height, sprite);
-
-  @override
-  render(Canvas canvas) {
-    if (x < HorizonDimensions.width) {
-      TextPainter p = Flame.util.text("Tampa",
-          color: new Color.fromRGBO(0, 0, 0, 1.0), fontSize: 48.0);
-    }
-    super.render(canvas);
-  }
 }
