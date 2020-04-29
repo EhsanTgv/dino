@@ -6,6 +6,7 @@ import 't_rex/t_rex.dart';
 import 'horizon/horizon.dart';
 import 'game_config.dart';
 import 't_rex/config.dart';
+import 'collision/collision_utils.dart';
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
@@ -13,6 +14,7 @@ class TRexGame extends BaseGame {
   TRex tRex;
   Horizon horizon;
   TRexGameStatus status = TRexGameStatus.waiting;
+
   double currentSpeed = GameConfig.speed;
 
   TRexGame({Image spriteImage}) {
@@ -24,7 +26,7 @@ class TRexGame extends BaseGame {
   }
 
   void onTap() {
-    tRex.startJump(GameConfig.speed);
+    tRex.startJump(this.currentSpeed);
   }
 
   @override
@@ -42,8 +44,15 @@ class TRexGame extends BaseGame {
       horizon.updateWithSpeed(t, this.currentSpeed);
     }
 
-    if (this.currentSpeed < GameConfig.maxSpeed) {
-      this.currentSpeed += GameConfig.acceleration;
+    var obstacles = horizon.horizonLine.obstacleManager.components;
+    bool collision =
+        obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
+    if (!collision) {
+      if (this.currentSpeed < GameConfig.maxSpeed) {
+        this.currentSpeed += GameConfig.acceleration;
+      }
+    } else {
+      gameOver();
     }
   }
 
@@ -54,4 +63,10 @@ class TRexGame extends BaseGame {
   }
 
   bool get playing => status == TRexGameStatus.playing;
+  int count = 0;
+
+  void gameOver() {
+    count++;
+    print("collision! $count");
+  }
 }
