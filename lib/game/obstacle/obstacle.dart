@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/sprite.dart';
+import '../collision/collision_box.dart';
 import '../custom/composed_component.dart';
 import '../custom/util.dart';
 import '../game_config.dart';
@@ -77,6 +78,7 @@ class ObstacleManager extends PositionComponent
 }
 
 class Obstacle extends SpriteComponent {
+  List<CollisionBox> collisionBoxes = new List();
   ObstacleType type;
 
   bool toRemove = false;
@@ -88,6 +90,8 @@ class Obstacle extends SpriteComponent {
   Obstacle(this.type, Sprite sprite, double speed, double gapCoefficient,
       [double opt_xOffset])
       : super.fromSprite(type.width, type.height, sprite) {
+    cloneCollisionBoxes();
+
     size = getRandomNum(1.0, ObstacleConfig.maxObstacleLength / 1).floor();
     x = HorizonDimensions.width + (opt_xOffset ?? 0.0);
 
@@ -96,9 +100,9 @@ class Obstacle extends SpriteComponent {
     }
 
     width = this.type.width * size;
-    Rect actualsrc = this.sprite.src;
+    Rect actualSrc = this.sprite.src;
     this.sprite.src =
-        Rect.fromLTWH(actualsrc.left, actualsrc.top, width, actualsrc.height);
+        Rect.fromLTWH(actualSrc.left, actualSrc.top, width, actualSrc.height);
     y = type.y;
 
     gap = this.getGap(gapCoefficient, speed);
@@ -127,7 +131,18 @@ class Obstacle extends SpriteComponent {
     return toRemove;
   }
 
-  bool get isVisible {
-    return x + this.width > 0;
+  bool get isVisible => x + this.width > 0;
+
+  void cloneCollisionBoxes() {
+    List<CollisionBox> typeCollisionBoxes = type.collisionBoxes;
+
+    typeCollisionBoxes.forEach((CollisionBox box) {
+      this.collisionBoxes.add(CollisionBox(
+        x: box.x,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+      ));
+    });
   }
 }
